@@ -4,16 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "pages:build": "npx @opennextjs/cloudflare build && cp .open-next/worker.js .open-next/_worker.js",
-    "preview": "npx @opennextjs/cloudflare preview",
-    "deploy": "npx @opennextjs/cloudflare deploy"
+    "build": "opennextjs-cloudflare",
+    "start": "next start"
   },
   "dependencies": {
-    "@libsql/client": "^0.17.3",
     "bcryptjs": "^3.0.3",
-    "drizzle-orm": "^0.45.2",
     "jose": "^6.2.2",
     "next": "16.2.4",
     "react": "19.2.4",
@@ -26,8 +21,6 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "drizzle-kit": "^0.31.10",
-    "typescript": "^5",
-    "wrangler": "^4.85.0"
+    "typescript": "^5"
   }
 }

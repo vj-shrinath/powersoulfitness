@@ -11,18 +11,14 @@ type ServiceItem = {
   img?: string;
 };
 
-type HomeClientProps = {
-  content: Record<string, string>;
-};
-
-export default function HomeClient({ content }: HomeClientProps) {
+export default function Home() {
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentPowerSlide, setCurrentPowerSlide] = useState(0);
   const [isPowerPaused, setIsPowerPaused] = useState(false);
 
   const heroImages = [
-    content.hero_image || '/images/gym-girl-scaled.jpg',
+    '/images/gym-girl-scaled.jpg',
     '/images/fitness image 2.jpg'
   ];
 
@@ -124,10 +120,10 @@ export default function HomeClient({ content }: HomeClientProps) {
 
         {/* Hero Content */}
         <div className="container" style={{ position: 'relative', zIndex: 2, animation: 'fadeInUp 1.2s ease-out' }}>
-          <h2 style={{ fontSize: '1.8rem', color: 'var(--accent)', marginBottom: '10px', textShadow: '2px 2px 4px rgba(0,0,0,0.5)', letterSpacing: '4px', textTransform: 'uppercase' }}>{content.home_title || 'Keep Your Body'}</h2>
+          <h2 style={{ fontSize: '1.8rem', color: 'var(--accent)', marginBottom: '10px', textShadow: '2px 2px 4px rgba(0,0,0,0.5)', letterSpacing: '4px', textTransform: 'uppercase' }}>Keep Your Body</h2>
           <h1 style={{ fontSize: '6rem', marginBottom: '30px', fontWeight: '900', letterSpacing: '2px', lineHeight: '1.1' }}><span className="fire-text">FIT & STRONG</span></h1>
           <p style={{ maxWidth: '700px', margin: '0 auto 40px', fontSize: '1.3rem', color: 'rgba(255,255,255,0.9)', lineHeight: '1.6' }}>
-            {content.home_subtitle || "Recognize your super powers with us. Build strength like superman and lift weight like thor's hammer. Join the most premium fitness destination in Lonar."}
+            Recognize your super powers with us. Build strength like superman and lift weight like thor's hammer. Join the most premium fitness destination in Lonar.
           </p>
           <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
             <a href="tel:9527958899" className="btn btn-primary glow-btn" style={{ padding: '15px 40px', fontSize: '1.1rem' }}>Start Training Now</a>

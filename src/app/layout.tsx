@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import ChatBot from "@/components/ChatBot";
 
 export const metadata: Metadata = {
   title: "Power Soul Fitness - Keep Your Body Fit & Strong",
@@ -24,7 +27,10 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {children}
+        <Header />
+        <main>{children}</main>
+        <Footer />
+        <ChatBot />
       </body>
     </html>
   );
