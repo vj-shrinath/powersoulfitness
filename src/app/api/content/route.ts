@@ -4,6 +4,8 @@ import { contents } from '@/db/schema';
 import { verifyAuth } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 
+export const runtime = 'edge';
+
 export async function GET() {
   try {
     const allContents = await db.select().from(contents);

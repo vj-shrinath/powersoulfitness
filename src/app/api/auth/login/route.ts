@@ -5,6 +5,8 @@ import { eq } from 'drizzle-orm';
 import bcrypt from 'bcryptjs';
 import { SignJWT } from 'jose';
 
+export const runtime = 'edge';
+
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'super_secret_key_change_in_production');
 
 export async function POST(request: Request) {
