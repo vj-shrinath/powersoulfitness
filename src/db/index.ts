@@ -1,11 +1,7 @@
-import { drizzle } from 'drizzle-orm/libsql';
-import { createClient } from '@libsql/client';
-import * as schema from './schema';
+// This file is completely stubbed out for the "Remade" backend.
+// It does nothing to ensure the site cannot crash at runtime.
 
-// This is the "Remade" simplified DB index. 
-// It returns a dummy client by default to prevent build errors.
-const client = createClient({ url: 'file:local.db' });
-export const db = drizzle(client, { schema });
+export const db = {} as any;
 
 export async function getDb() {
   return db;
