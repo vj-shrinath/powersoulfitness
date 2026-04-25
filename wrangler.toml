@@ -14,4 +14,4 @@ migrations_dir = "drizzle"
 
 [assets]
 directory = ".open-next/assets"
-binding = "ASSETS"
+binding = "NEXTJS_ASSETS"
