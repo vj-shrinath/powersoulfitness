@@ -7,6 +7,10 @@ binding = "DB"
 database_name = "power-soul-db"
 database_id = "b392a209-a7ec-4244-9265-24e4a9d44ef0"
 migrations_dir = "drizzle"
+pages_build_output_dir = ".vercel/output"
+
+[build]
+command = "npx @cloudflare/next-on-pages"
 
 [assets]
 directory = ".vercel/output"
