@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function proxy(request: NextRequest) {
+export const runtime = 'edge';
+
+export function middleware(request: NextRequest) {
   const token = request.cookies.get('auth_token')?.value;
   const isLoginPage = request.nextUrl.pathname === '/admin/login';
-  const isAdminRoute = request.nextUrl.pathname.startsWith('/admin');
+  const isAdminPage = request.nextUrl.pathname.startsWith('/admin') && !isLoginPage;
 
-  if (isAdminRoute && !isLoginPage && !token) {
+  if (isAdminPage && !token) {
     return NextResponse.redirect(new URL('/admin/login', request.url));
   }
 
