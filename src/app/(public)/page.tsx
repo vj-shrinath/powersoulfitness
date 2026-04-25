@@ -1,9 +1,7 @@
-import HomeClient from '@/components/HomeClient';
-import { getDynamicContent } from '@/lib/content';
-
-export const revalidate = 0;
-
-export default async function Home() {
-  const content = await getDynamicContent(['home_title', 'home_subtitle', 'hero_image']);
-  return <HomeClient content={content} />;
+export default function Home() {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#000', color: '#fff' }}>
+      <h1>Power Soul Fitness - System Check Live ✅</h1>
+    </div>
+  );
 }
