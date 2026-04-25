@@ -1,0 +1,16 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "power-soul-fitness"
+main = ".open-next/worker.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+# D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "power-soul-db"
+database_id = "b392a209-a7ec-4244-9265-24e4a9d44ef0"
+migrations_dir = "drizzle"
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
