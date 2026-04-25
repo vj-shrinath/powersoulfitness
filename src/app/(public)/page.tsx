@@ -3,7 +3,6 @@ import { contents } from '@/db/schema';
 import HomeClient from '@/components/HomeClient';
 import { getDynamicContent } from '@/lib/content';
 
-export const runtime = 'experimental-edge';
 export const revalidate = 0; // Or you can use specific revalidate times
 
 export default async function Home() {
