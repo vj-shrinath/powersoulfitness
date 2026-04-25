@@ -1,13 +1,25 @@
+import { drizzle as drizzleD1 } from 'drizzle-orm/d1';
 import { drizzle } from 'drizzle-orm/libsql';
 import { createClient } from '@libsql/client';
 import * as schema from './schema';
 
-// During the Cloudflare build phase, process.env.DB is not available.
-// At runtime on Cloudflare, the D1 binding is injected via the Cloudflare env.
-// OpenNext handles injecting the D1 binding at runtime automatically.
-// For local dev, we fall back to a local SQLite file.
+export type DbInstance = ReturnType<typeof drizzle<typeof schema>>;
 
-const url = process.env.DATABASE_URL || 'file:local.db';
+export async function getDb(): Promise<DbInstance> {
+  // Production: use Cloudflare D1 via OpenNext's context
+  try {
+    const { getCloudflareContext } = await import('@opennextjs/cloudflare');
+    const { env } = await getCloudflareContext({ async: true });
+    if (env.DB) {
+      // @ts-ignore - D1Database is compatible
+      return drizzleD1(env.DB, { schema }) as unknown as DbInstance;
+    }
+  } catch {
+    // Not running in Cloudflare context (local dev)
+  }
 
-const client = createClient({ url });
-export const db = drizzle(client, { schema });
+  // Local development: use libsql with a local SQLite file
+  const url = process.env.DATABASE_URL || 'file:local.db';
+  const client = createClient({ url });
+  return drizzle(client, { schema });
+}

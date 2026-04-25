@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/db';
+import { getDb } from '@/db';
 import { users } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import bcrypt from 'bcryptjs';
@@ -10,6 +10,7 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'super_sec
 export async function POST(request: Request) {
   try {
     const { username, password } = await request.json();
+    const db = await getDb();
     const userResult = await db.select().from(users).where(eq(users.username, username)).limit(1);
     
     if (userResult.length === 0) {

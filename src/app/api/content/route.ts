@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/db';
+import { getDb } from '@/db';
 import { contents } from '@/db/schema';
 import { verifyAuth } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 
 export async function GET() {
   try {
+    const db = await getDb();
     const allContents = await db.select().from(contents);
     const contentMap = allContents.reduce((acc, curr) => {
       acc[curr.key] = { value: curr.value, type: curr.type };
@@ -32,6 +33,7 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'Key and value are required' }, { status: 400 });
     }
 
+    const db = await getDb();
     await db.insert(contents).values({ key, value, type: type || 'text' })
       .onConflictDoUpdate({
         target: contents.key,
