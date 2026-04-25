@@ -1,9 +1,10 @@
-import { db } from './src/db';
+import { getDb } from './src/db';
 import { users, contents } from './src/db/schema';
 import bcrypt from 'bcryptjs';
 
 async function seed() {
   console.log('Seeding database...');
+  const db = await getDb();
   const passwordHash = await bcrypt.hash('admin123', 10);
   
   await db.insert(users).values({
