@@ -5,21 +5,32 @@ import * as schema from './schema';
 
 export type DbInstance = ReturnType<typeof drizzle<typeof schema>>;
 
-export async function getDb(): Promise<DbInstance> {
-  // Production: use Cloudflare D1 via OpenNext's context
+export async function getDb(): Promise<DbInstance | null> {
+  // 1. Try Cloudflare D1 (Production)
   try {
     const { getCloudflareContext } = await import('@opennextjs/cloudflare');
     const { env } = await getCloudflareContext({ async: true });
-    if (env.DB) {
+    
+    if (env && (env as any).DB) {
       // @ts-ignore - D1Database is compatible
-      return drizzleD1(env.DB, { schema }) as unknown as DbInstance;
+      return drizzleD1((env as any).DB, { schema }) as unknown as DbInstance;
     }
-  } catch {
-    // Not running in Cloudflare context (local dev)
+  } catch (e) {
+    console.warn('Cloudflare context not found, falling back...');
   }
 
-  // Local development: use libsql with a local SQLite file
-  const url = process.env.DATABASE_URL || 'file:local.db';
-  const client = createClient({ url });
-  return drizzle(client, { schema });
+  // 2. Try Local SQLite (Development)
+  try {
+    const url = process.env.DATABASE_URL || 'file:local.db';
+    // We only use the 'file:' URL if we are NOT on Cloudflare
+    // Cloudflare workers don't support 'file:' protocol
+    if (!url.startsWith('file:') || typeof edgeRuntime === 'undefined') {
+      const client = createClient({ url });
+      return drizzle(client, { schema });
+    }
+  } catch (e) {
+    console.error('Local database initialization failed:', e);
+  }
+
+  return null;
 }
