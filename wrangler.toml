@@ -1,0 +1,9 @@
+name = "power-soul-fitness"
+compatibility_date = "2024-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "power-soul-db"
+database_id = "b392a209-a7ec-4244-9265-24e4a9d44ef0"
+migrations_dir = "drizzle"
