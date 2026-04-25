@@ -1,48 +1,17 @@
 import { NextResponse } from 'next/server';
-import { getDb } from '@/db';
-import { contents } from '@/db/schema';
-import { verifyAuth } from '@/lib/auth';
-import { eq } from 'drizzle-orm';
 
 export async function GET() {
-  try {
-    const db = await getDb();
-    const allContents = await db.select().from(contents);
-    const contentMap = allContents.reduce((acc, curr) => {
-      acc[curr.key] = { value: curr.value, type: curr.type };
-      return acc;
-    }, {} as Record<string, { value: string; type: string }>);
-    
-    return NextResponse.json({ success: true, data: contentMap });
-  } catch (error) {
-    console.error('Failed to fetch contents:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-  }
+  // Simplified backend response
+  const content = {
+    home_title: { value: 'Unleash Your Inner Power', type: 'text' },
+    home_subtitle: { value: 'Join Power Soul Fitness and experience the ultimate transformation in strength, mind, and spirit.', type: 'text' },
+    hero_image: { value: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop', type: 'image' },
+  };
+  
+  return NextResponse.json({ success: true, data: content });
 }
 
-export async function PUT(request: Request) {
-  try {
-    const user = await verifyAuth();
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { key, value, type } = await request.json();
-    
-    if (!key || !value) {
-      return NextResponse.json({ error: 'Key and value are required' }, { status: 400 });
-    }
-
-    const db = await getDb();
-    await db.insert(contents).values({ key, value, type: type || 'text' })
-      .onConflictDoUpdate({
-        target: contents.key,
-        set: { value, type: type || 'text' }
-      });
-
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('Failed to update content:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-  }
+export async function PUT() {
+  // Placeholder for when we re-enable the DB
+  return NextResponse.json({ success: true, message: 'Backend reset mode: changes not saved' });
 }
