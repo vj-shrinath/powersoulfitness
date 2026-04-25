@@ -3,7 +3,7 @@ import { createClient } from '@libsql/client';
 import { drizzle as drizzleD1 } from 'drizzle-orm/d1';
 import * as schema from './schema';
 
-export const runtime = 'edge';
+export const runtime = 'experimental-edge';
 
 // This function will return the correct database instance based on the environment
 export const getDb = () => {
