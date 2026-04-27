@@ -1,12 +1,32 @@
 'use client';
 export const runtime = "edge";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 export default function AboutUs() {
+  const [cmsData, setCmsData] = useState<any>({});
+  const [loading, setLoading] = useState(true);
+
+  // Fetch CMS Content
+  useEffect(() => {
+    fetch('/api/content')
+      .then(res => res.json())
+      .then(data => {
+        // Convert array of content into a key-value map for easy access
+        const contentMap = data?.content?.reduce((acc: any, item: any) => {
+          acc[item.key] = item.value;
+          return acc;
+        }, {}) || {};
+        setCmsData(contentMap);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
   // Initialize ScrollReveal
   useEffect(() => {
+    if (loading) return;
     const observerOptions = { threshold: 0.1 };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -20,16 +40,18 @@ export default function AboutUs() {
     elements.forEach(el => observer.observe(el));
     
     return () => observer.disconnect();
-  }, []);
+  }, [loading]);
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-dark text-white">Loading About Us...</div>;
 
   return (
     <div className="about-page">
       {/* Page Header */}
-      <section className="page-header" style={{ 
-        height: '60vh', 
-        minHeight: '400px',
-        background: 'linear-gradient(rgba(0,0,0,0.6), rgba(10,10,10,1)), url("/images/conquer.jpg")',
-        backgroundSize: 'cover',
+        <section className="page-header relative" style={{ 
+          height: '60vh', 
+          minHeight: '400px',
+          background: `linear-gradient(rgba(0,0,0,0.8), rgba(10,10,10,1)), url("${cmsData.about_hero_bg || '/images/conquer.jpg'}")`,
+          backgroundSize: 'cover',
         backgroundPosition: 'center',
         display: 'flex',
         alignItems: 'center',
@@ -37,8 +59,8 @@ export default function AboutUs() {
         textAlign: 'center',
         paddingTop: '80px',
       }}>
-        <div className="container reveal animate-up">
-          <h1 className="gradient-text" style={{ fontSize: '4.5rem', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '3px' }}>About Us</h1>
+        <div className="container px-4 reveal animate-up">
+          <h1 className="gradient-text font-black" style={{ fontSize: 'clamp(2.5rem, 10vw, 5rem)', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '2px', lineHeight: '1.1' }}>About Us</h1>
           <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', color: 'var(--text-grey)', fontSize: '1.1rem' }}>
             <Link href="/" className="hover-primary">Home</Link>
             <span>/</span>
@@ -48,21 +70,21 @@ export default function AboutUs() {
       </section>
 
       {/* Mission & Vision Section */}
-      <section className="mission-vision reveal animate-up" style={{ padding: '100px 0', backgroundColor: 'var(--bg-dark)' }}>
-        <div className="container">
-          <div className="row" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '40px' }}>
+      <section className="mission-vision reveal animate-up" style={{ padding: '80px 0', backgroundColor: 'var(--bg-dark)' }}>
+        <div className="container px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Our Mission */}
             <div className="glass reveal animate-left" style={{ padding: '50px', borderTop: '4px solid var(--primary)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
               <i className="fas fa-bullseye fa-3x" style={{ color: 'var(--primary)', marginBottom: '20px' }}></i>
               <h2 style={{ fontSize: '2.2rem', marginBottom: '20px' }}>Our Mission</h2>
               <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '20px' }}>
-                We are Team <strong>POWER SOUL</strong>, your ultimate guide for fitness, nutrition, and the wellness of life.
+                {cmsData.about_mission_p1 || "We are Team POWER SOUL, your ultimate guide for fitness, nutrition, and the wellness of life."}
               </p>
               <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '20px' }}>
-                Our mission is to make our clients fit not only physically but mentally as well—that's why we call it a <strong>POWER SOUL</strong>. We strive to give our youth a new addiction to fitness, steering them away from bad habits.
+                {cmsData.about_mission_p2 || "Our mission is to make our clients fit not only physically but mentally as well—that's why we call it a POWER SOUL. We strive to give our youth a new addiction to fitness, steering them away from bad habits."}
               </p>
               <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8' }}>
-                In today's life, everyone is going through some problems, anxiety, and tension. We may not be able to solve all of them, but we definitely can give you the strength to face them.
+                {cmsData.about_mission_p3 || "In today's life, everyone is going through some problems, anxiety, and tension. We may not be able to solve all of them, but we definitely can give you the strength to face them."}
               </p>
             </div>
 
@@ -71,10 +93,10 @@ export default function AboutUs() {
               <i className="fas fa-eye fa-3x" style={{ color: 'var(--accent)', marginBottom: '20px' }}></i>
               <h2 style={{ fontSize: '2.2rem', marginBottom: '20px' }}>Our Vision</h2>
               <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '20px' }}>
-                To make our clients live a healthy and happy life by providing them the absolute best service.
+                {cmsData.about_vision_p1 || "To make our clients live a healthy and happy life by providing them the absolute best service."}
               </p>
               <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8' }}>
-                We aim to transform people by cultivating good habits of wellness and fitness. By spreading awareness of a healthy lifestyle, we help our community avoid bad addictions and live their best lives.
+                {cmsData.about_vision_p2 || "We aim to transform people by cultivating good habits of wellness and fitness. By spreading awareness of a healthy lifestyle, we help our community avoid bad addictions and live their best lives."}
               </p>
             </div>
           </div>
@@ -82,18 +104,18 @@ export default function AboutUs() {
       </section>
 
       {/* Founder & Team Section */}
-      <section className="team-section reveal animate-up" style={{ padding: '100px 0', backgroundColor: 'var(--bg-dark-alt)' }}>
-        <div className="container">
+      <section className="team-section reveal animate-up" style={{ padding: '80px 0', backgroundColor: 'var(--bg-dark-alt)' }}>
+        <div className="container px-4">
           <div className="section-title text-center" style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <h2 className="gradient-text" style={{ fontSize: '3rem' }}>Power Soul Fitness <span style={{ color: 'var(--text-light)' }}>LONAR</span></h2>
+            <h2 className="gradient-text" style={{ fontSize: 'clamp(2rem, 8vw, 3rem)' }}>Power Soul Fitness <span style={{ color: 'var(--text-light)' }}>LONAR</span></h2>
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '60px', justifyContent: 'center' }}>
+          <div className="flex flex-col lg:flex-row items-center gap-12 justify-center">
             {/* Image */}
-            <div className="glass reveal animate-left" style={{ padding: '15px', maxWidth: '400px', width: '100%', borderRadius: '12px' }}>
+            <div className="glass reveal animate-left" style={{ padding: '15px', maxWidth: '350px', width: '100%', borderRadius: '12px' }}>
               <img 
-                src="https://web.archive.org/web/20230322152101im_/https://powersoulfitness.com/wp-content/uploads/2021/12/shiv-mapari-768x1097.jpeg" 
-                alt="Shiv Mapari" 
+                src={cmsData.about_founder_image || "https://web.archive.org/web/20230322152101im_/https://powersoulfitness.com/wp-content/uploads/2021/12/shiv-mapari-768x1097.jpeg"}
+                alt="Founder" 
                 style={{ width: '100%', borderRadius: '8px', display: 'block' }} 
               />
             </div>
@@ -101,9 +123,11 @@ export default function AboutUs() {
             {/* Details */}
             <div className="reveal animate-right" style={{ maxWidth: '600px', textAlign: 'center' }}>
               <h3 style={{ fontSize: '2.5rem', marginBottom: '10px', color: 'var(--primary)' }}>A project by</h3>
-              <h2 style={{ fontSize: '3.5rem', textTransform: 'uppercase', marginBottom: '15px', letterSpacing: '2px' }}>Mr. Shiv Mapari</h2>
+              <h2 style={{ fontSize: '3.5rem', textTransform: 'uppercase', marginBottom: '15px', letterSpacing: '2px' }}>
+                {cmsData.about_founder_name || "Mr. Shiv Mapari"}
+              </h2>
               <p style={{ color: 'var(--accent)', fontSize: '1.3rem', marginBottom: '40px', fontStyle: 'italic' }}>
-                (Govt. Certified Nutritionist and Fitness Coach)
+                {cmsData.about_founder_role || "(Govt. Certified Nutritionist and Fitness Coach)"}
               </p>
 
               <div className="glass" style={{ padding: '40px', backgroundColor: 'rgba(255,255,255,0.02)' }}>

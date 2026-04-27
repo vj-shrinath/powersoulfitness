@@ -1,3 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #a862ed;
+  --color-primary-hover: #8224e3;
+  --color-accent: #dd9933;
+  --color-accent-hover: #b87d2a;
+  --color-dark: #0a0a0a;
+  --color-dark-alt: #121212;
+  --color-text-dark: #1e1e1e;
+  --color-text-light: #ffffff;
+  --color-text-grey: #a6a6a6;
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+  --font-main: "Poppins", sans-serif;
+  --font-heading: "Montserrat", sans-serif;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Poppins:wght@300;400;500;600;700;800&family=Roboto+Slab:wght@300;400;700&display=swap');
 
 :root {
@@ -28,7 +45,9 @@ body {
   background-color: var(--bg-dark);
   color: var(--text-light);
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow-x: hidden !important;
+  width: 100%;
+  position: relative;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -71,16 +90,7 @@ img {
 
 /* Buttons */
 .btn {
-  display: inline-block;
-  padding: 12px 30px;
-  border-radius: 5px;
-  font-weight: 600;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: var(--transition);
-  border: none;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
+  @apply inline-block px-8 py-3 rounded font-semibold uppercase cursor-pointer transition-all duration-300 border-none text-sm tracking-wider;
 }
 
 .btn-primary {
@@ -107,7 +117,7 @@ img {
 
 .btn-outline {
   background: transparent;
-  border: 2px solid white;
+  border: 2px solid white !important;
   color: white;
 }
 
@@ -119,6 +129,8 @@ img {
 /* Sections */
 section {
   padding: 80px 0;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .section-title {
@@ -201,7 +213,7 @@ section {
 /* Responsiveness */
 @media (max-width: 991px) {
   .hero h1 { font-size: 3rem; }
-  .nav-menu { display: none; } /* Simplified for now, in a real app we'd add a mobile menu toggle */
+  .nav-menu { display: none; } 
   .header-btn { display: none; }
   section { padding: 50px 0; }
   .welcome { grid-template-columns: 1fr !important; }
@@ -342,6 +354,8 @@ section {
   background: rgba(255, 255, 255, 0.3);
   cursor: pointer;
   transition: var(--transition);
+  border: 0;
+  padding: 0;
 }
 
 .power-dot.active {
@@ -364,4 +378,3 @@ section {
     display: none !important;
   }
 }
-

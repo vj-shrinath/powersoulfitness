@@ -6,15 +6,34 @@ import { useEffect, useState } from 'react';
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', phone: '', subject: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [cmsData, setCmsData] = useState<any>({});
+  const [loading, setLoading] = useState(true);
+
+  // Fetch CMS Content
+  useEffect(() => {
+    fetch('/api/content')
+      .then(res => res.json())
+      .then(data => {
+        // Convert array of content into a key-value map for easy access
+        const contentMap = data?.content?.reduce((acc: any, item: any) => {
+          acc[item.key] = item.value;
+          return acc;
+        }, {}) || {};
+        setCmsData(contentMap);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   useEffect(() => {
+    if (loading) return;
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('active'); }),
       { threshold: 0.1 }
     );
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [loading]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,9 +41,13 @@ export default function ContactPage() {
     const msg = encodeURIComponent(
       `Hi! 🙋 I'm ${formData.name}.\nPhone: ${formData.phone}\nSubject: ${formData.subject}\nMessage: ${formData.message}`
     );
-    window.open(`https://api.whatsapp.com/send?phone=919527958899&text=${msg}`, '_blank');
+    // Use dynamic phone number if available, else default
+    const phone = cmsData.contact_phone1 ? cmsData.contact_phone1.replace(/\s+/g, '') : '+919527958899';
+    window.open(`https://api.whatsapp.com/send?phone=${phone.replace('+', '')}&text=${msg}`, '_blank');
     setSubmitted(true);
   };
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-dark text-white">Loading Contact...</div>;
 
   const inputStyle: React.CSSProperties = {
     width: '100%',
@@ -54,7 +77,7 @@ export default function ContactPage() {
     {
       icon: 'fas fa-map-marker-alt',
       title: 'Our Location',
-      lines: ['Opposite Limbi Lake,', 'Loni Road, Lonar'],
+      lines: [cmsData.contact_address1 || 'Opposite Limbi Lake,', cmsData.contact_address2 || 'Loni Road, Lonar'],
       link: 'https://maps.google.com/maps?q=power+soul+fitness+lonar',
       linkText: 'Get Directions',
       color: 'var(--primary)',
@@ -62,16 +85,16 @@ export default function ContactPage() {
     {
       icon: 'fas fa-phone-volume',
       title: 'Call Us',
-      lines: ['+91 9527958899', '+91 8308068899'],
-      link: 'tel:+919527958899',
+      lines: [cmsData.contact_phone1 || '+91 9527958899', cmsData.contact_phone2 || '+91 8308068899'],
+      link: `tel:${cmsData.contact_phone1 ? cmsData.contact_phone1.replace(/\s+/g, '') : '+919527958899'}`,
       linkText: 'Call Now',
       color: 'var(--accent)',
     },
     {
       icon: 'fas fa-envelope',
       title: 'Email Us',
-      lines: ['powersoulfitness@gmail.com'],
-      link: 'mailto:powersoulfitness@gmail.com',
+      lines: [cmsData.contact_email || 'powersoulfitness@gmail.com'],
+      link: `mailto:${cmsData.contact_email || 'powersoulfitness@gmail.com'}`,
       linkText: 'Send Email',
       color: 'var(--primary)',
     },
@@ -79,7 +102,7 @@ export default function ContactPage() {
       icon: 'fab fa-whatsapp',
       title: 'WhatsApp',
       lines: ['Chat with us instantly', 'Quick responses guaranteed!'],
-      link: 'https://api.whatsapp.com/send?phone=919527958899&text=Hii%F0%9F%99%8B,%20I%20want%20more%20information%20about%20Power%20Soul%20Fitness!',
+      link: `https://api.whatsapp.com/send?phone=${cmsData.contact_phone1 ? cmsData.contact_phone1.replace(/\D/g, '') : '919527958899'}&text=Hii%F0%9F%99%8B,%20I%20want%20more%20information%20about%20Power%20Soul%20Fitness!`,
       linkText: 'WhatsApp Now',
       color: '#25D366',
     },
@@ -92,7 +115,7 @@ export default function ContactPage() {
         style={{
           height: '55vh',
           minHeight: '380px',
-          backgroundImage: 'linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.88)), url("/images/conquer.jpg")',
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.88)), url("${cmsData.contact_hero_bg || '/images/conquer.jpg'}")`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
@@ -108,15 +131,15 @@ export default function ContactPage() {
             <span style={{ color: 'var(--primary)', textShadow: '0 0 30px rgba(168,98,237,0.6)' }}>Touch</span>
           </h1>
           <p style={{ color: '#ccc', fontSize: '1.15rem', maxWidth: '560px', margin: '0 auto' }}>
-            Feel free to reach out. We&apos;re always here to help you start your fitness journey in <strong style={{ color: '#fff' }}>Lonar</strong>.
+            {cmsData.contact_hero_subtitle || "Feel free to reach out. We're always here to help you start your fitness journey in Lonar."}
           </p>
         </div>
       </section>
 
       {/* Contact Info Cards */}
       <section style={{ backgroundColor: '#0a0a0a', padding: '80px 0 40px' }}>
-        <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '24px' }}>
+        <div className="container px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {contactCards.map((card, i) => (
               <div
                 key={i}
@@ -168,8 +191,8 @@ export default function ContactPage() {
 
       {/* Form + Map */}
       <section style={{ backgroundColor: '#0a0a0a', padding: '40px 0 100px' }}>
-        <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px', alignItems: 'start' }}>
+        <div className="container px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
 
             {/* Contact Form */}
             <div className="reveal animate-up">
@@ -257,7 +280,7 @@ export default function ContactPage() {
                   <span style={{ color: 'var(--primary)' }}>Visit Us</span>
                 </h2>
                 <p style={{ color: '#888', marginBottom: '24px', lineHeight: 1.7, fontSize: '0.95rem' }}>
-                  We&apos;re located in the heart of <strong style={{ color: '#fff' }}>Lonar</strong>, right opposite Limbi Lake on Loni Road. Come visit us and take your first step toward a stronger, healthier you!
+                  {cmsData.contact_visit_desc || "We're located in the heart of Lonar, right opposite Limbi Lake on Loni Road. Come visit us and take your first step toward a stronger, healthier you!"}
                 </p>
                 {/* Google Map Embed */}
                 <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
@@ -277,16 +300,16 @@ export default function ContactPage() {
               {/* Quick Links */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 <a
-                  href="tel:+919527958899"
+                  href={`tel:${cmsData.contact_phone1 ? cmsData.contact_phone1.replace(/\s+/g, '') : '+919527958899'}`}
                   style={{ background: 'rgba(168,98,237,0.1)', border: '1px solid rgba(168,98,237,0.25)', borderRadius: '12px', padding: '20px', textAlign: 'center', textDecoration: 'none', transition: 'all 0.3s' }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(168,98,237,0.2)'; }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(168,98,237,0.1)'; }}
                 >
                   <i className="fas fa-phone" style={{ color: 'var(--primary)', fontSize: '1.5rem', display: 'block', marginBottom: '8px' }} />
-                  <span style={{ color: '#fff', fontWeight: 700, fontSize: '0.85rem' }}>9527958899</span>
+                  <span style={{ color: '#fff', fontWeight: 700, fontSize: '0.85rem' }}>{cmsData.contact_phone1 || '9527958899'}</span>
                 </a>
                 <a
-                  href="https://api.whatsapp.com/send?phone=919527958899&text=Hi!%20I%20want%20more%20info%20about%20Power%20Soul%20Fitness!"
+                  href={`https://api.whatsapp.com/send?phone=${cmsData.contact_phone1 ? cmsData.contact_phone1.replace(/\D/g, '') : '919527958899'}&text=Hi!%20I%20want%20more%20info%20about%20Power%20Soul%20Fitness!`}
                   target="_blank" rel="noopener noreferrer"
                   style={{ background: 'rgba(37,211,102,0.1)', border: '1px solid rgba(37,211,102,0.25)', borderRadius: '12px', padding: '20px', textAlign: 'center', textDecoration: 'none', transition: 'all 0.3s' }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(37,211,102,0.2)'; }}
