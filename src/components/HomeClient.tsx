@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import AnnouncementBanner from './AnnouncementBanner';
+import GoogleReviews from './GoogleReviews';
+
 
 type ServiceItem = {
   id: string;
@@ -387,6 +389,9 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      {/* Google Reviews Section */}
+      {isSectionEnabled('reviews') && <GoogleReviews />}
     </div>
   );
 }

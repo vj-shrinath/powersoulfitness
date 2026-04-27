@@ -34,6 +34,12 @@
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+
+.drop-shadow-2xl {
+  padding: 20px
+}
+
+
 * {
   margin: 0;
   padding: 0;
@@ -270,6 +276,7 @@ section {
 }
 
 .fire-text {
+  padding-bottom: 10px;
   background-image: linear-gradient(
     -45deg, 
     #ff0000 0%, 

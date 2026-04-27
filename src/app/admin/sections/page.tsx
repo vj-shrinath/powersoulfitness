@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
-import { GripVertical, Eye, EyeOff, Settings2, Plus, ArrowUp, ArrowDown } from 'lucide-react'
+import { GripVertical, Eye, EyeOff, Settings2, Plus, ArrowUp, ArrowDown, Layout } from 'lucide-react'
+import Switch from '@/components/admin/Switch'
 
 type Section = {
   id: string
@@ -14,6 +15,7 @@ type Section = {
 export default function SectionsPage() {
   const [sections, setSections] = useState<Section[]>([])
   const [loading, setLoading] = useState(true)
+  const [updating, setUpdating] = useState<string | null>(null)
   const supabase = createClient()
 
   useEffect(() => {
@@ -31,6 +33,7 @@ export default function SectionsPage() {
   }
 
   const toggleSection = async (id: string, current: boolean) => {
+    setUpdating(id)
     const { error } = await supabase
       .from('sections')
       .update({ enabled: !current })
@@ -39,6 +42,7 @@ export default function SectionsPage() {
     if (!error) {
       setSections(sections.map(s => s.id === id ? { ...s, enabled: !current } : s))
     }
+    setUpdating(null)
   }
 
   const moveSection = async (index: number, direction: 'up' | 'down') => {
@@ -56,7 +60,7 @@ export default function SectionsPage() {
     const updated = newSections.map((s, i) => ({ ...s, order: i }))
     setSections(updated)
 
-    // Update in DB (in a real app, use a RPC or multiple updates)
+    // Update in DB
     for (const item of updated) {
       await supabase.from('sections').update({ order: item.order }).eq('id', item.id)
     }
@@ -66,8 +70,11 @@ export default function SectionsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-1">Section Builder</h1>
-          <p className="text-text-grey text-sm">Organize and toggle visibility of website sections.</p>
+          <h1 className="text-3xl font-bold text-white mb-1 flex items-center gap-3">
+            <Layout className="text-primary" size={28} />
+            Section Builder
+          </h1>
+          <p className="text-text-grey text-sm">Organize and toggle visibility of homepage sections.</p>
         </div>
         <button className="btn btn-primary flex items-center gap-2">
           <Plus size={18} />
@@ -75,55 +82,72 @@ export default function SectionsPage() {
         </button>
       </div>
 
-      <div className="glass border border-glass-border overflow-hidden">
+      <div className="glass border border-glass-border overflow-hidden rounded-2xl">
         <div className="bg-white/5 px-6 py-4 border-b border-glass-border flex items-center justify-between">
-          <span className="text-sm font-bold text-text-grey uppercase tracking-wider">Structure</span>
-          <span className="text-xs text-text-grey">Drag and drop to reorder (Coming Soon)</span>
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-bold text-white uppercase tracking-wider">Homepage Structure</span>
+            <span className={`text-[10px] px-2 py-0.5 rounded-full ${sections.filter(s => s.enabled).length > 0 ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
+              {sections.filter(s => s.enabled).length} Active
+            </span>
+          </div>
+          <span className="text-xs text-text-grey">Reorder using arrows</span>
         </div>
         <div className="divide-y divide-glass-border">
           {loading ? (
-            <div className="p-20 text-center text-text-grey">Loading sections...</div>
+            <div className="p-20 flex flex-col items-center justify-center text-text-grey">
+              <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+              <p>Loading sections...</p>
+            </div>
+          ) : sections.length === 0 ? (
+            <div className="p-20 text-center text-text-grey">No sections found.</div>
           ) : (
             sections.map((section, index) => (
-              <div key={section.id} className={`flex items-center gap-4 p-6 transition-colors hover:bg-white/[0.02] ${!section.enabled ? 'opacity-50' : ''}`}>
-                <div className="text-text-grey hover:text-white cursor-grab active:cursor-grabbing">
-                  <GripVertical size={20} />
+              <div key={section.id} className={`flex items-center gap-4 p-6 transition-all duration-300 ${!section.enabled ? 'bg-black/20 grayscale' : 'hover:bg-white/[0.02]'}`}>
+                <div className="text-text-grey">
+                  <GripVertical size={20} className="opacity-30" />
                 </div>
                 
                 <div className="flex-1">
-                  <h3 className="text-white font-bold text-lg">{section.name}</h3>
-                  <p className="text-xs text-text-grey font-mono">ID: {section.id}</p>
+                  <div className="flex items-center gap-3">
+                    <h3 className={`text-lg font-bold transition-colors ${section.enabled ? 'text-white' : 'text-text-grey'}`}>
+                      {section.name}
+                    </h3>
+                    {!section.enabled && <span className="text-[10px] uppercase font-bold text-red-500/60 tracking-widest border border-red-500/20 px-1.5 py-0.5 rounded">Hidden</span>}
+                  </div>
+                  <p className="text-xs text-text-grey font-mono mt-0.5 opacity-50">ID: {section.id}</p>
                 </div>
 
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1">
+                <div className="flex items-center gap-6">
+                  <div className="flex items-center bg-black/30 border border-glass-border rounded-lg p-1">
                     <button 
                       onClick={() => moveSection(index, 'up')}
                       disabled={index === 0}
-                      className="p-2 text-text-grey hover:text-white disabled:opacity-20 transition-all"
+                      className="p-1.5 text-text-grey hover:text-primary disabled:opacity-10 transition-all hover:bg-white/5 rounded-md"
+                      title="Move Up"
                     >
-                      <ArrowUp size={18} />
+                      <ArrowUp size={16} />
                     </button>
+                    <div className="w-px h-4 bg-glass-border mx-1" />
                     <button 
                       onClick={() => moveSection(index, 'down')}
                       disabled={index === sections.length - 1}
-                      className="p-2 text-text-grey hover:text-white disabled:opacity-20 transition-all"
+                      className="p-1.5 text-text-grey hover:text-primary disabled:opacity-10 transition-all hover:bg-white/5 rounded-md"
+                      title="Move Down"
                     >
-                      <ArrowDown size={18} />
+                      <ArrowDown size={16} />
                     </button>
                   </div>
 
-                  <button 
-                    onClick={() => toggleSection(section.id, section.enabled)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      section.enabled 
-                        ? 'bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-white' 
-                        : 'bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white'
-                    }`}
-                  >
-                    {section.enabled ? <Eye size={16} /> : <EyeOff size={16} />}
-                    {section.enabled ? 'Visible' : 'Hidden'}
-                  </button>
+                  <div className="flex items-center gap-3 pr-2">
+                    <span className={`text-xs font-medium transition-colors ${section.enabled ? 'text-green-500' : 'text-text-grey'}`}>
+                      {section.enabled ? 'Active' : 'Inactive'}
+                    </span>
+                    <Switch 
+                      checked={section.enabled} 
+                      onChange={() => toggleSection(section.id, section.enabled)}
+                      disabled={updating === section.id}
+                    />
+                  </div>
 
                   <button className="p-2.5 bg-white/5 border border-glass-border rounded-lg text-text-grey hover:text-white hover:bg-white/10 transition-all">
                     <Settings2 size={18} />

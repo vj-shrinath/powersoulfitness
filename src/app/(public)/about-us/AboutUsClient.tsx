@@ -17,11 +17,17 @@ export default function AboutUsClient() {
           acc[item.key] = item.value;
           return acc;
         }, {}) || {};
-        setCmsData(contentMap);
+        setCmsData({ ...contentMap, _sections: data.sections });
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, []);
+
+  const isSectionEnabled = (name: string) => {
+    if (!cmsData?._sections) return true;
+    const section = cmsData._sections.find((s: any) => s.name.toLowerCase() === name.toLowerCase());
+    return section ? section.enabled : true;
+  };
 
   // Initialize ScrollReveal
   useEffect(() => {
@@ -69,83 +75,74 @@ export default function AboutUsClient() {
       </section>
 
       {/* Mission & Vision Section */}
-      <section className="mission-vision reveal animate-up" style={{ padding: '80px 0', backgroundColor: 'var(--bg-dark)' }}>
-        <div className="container px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Our Mission */}
-            <div className="glass reveal animate-left" style={{ padding: '50px', borderTop: '4px solid var(--primary)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
-              <i className="fas fa-bullseye fa-3x" style={{ color: 'var(--primary)', marginBottom: '20px' }}></i>
-              <h2 style={{ fontSize: '2.2rem', marginBottom: '20px' }}>Our Mission</h2>
-              <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '20px' }}>
-                {cmsData.about_mission_p1 || "We are Team POWER SOUL, your ultimate guide for fitness, nutrition, and the wellness of life."}
-              </p>
-              <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '20px' }}>
-                {cmsData.about_mission_p2 || "Our mission is to make our clients fit not only physically but mentally as well—that's why we call it a POWER SOUL. We strive to give our youth a new addiction to fitness, steering them away from bad habits."}
-              </p>
-              <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8' }}>
-                {cmsData.about_mission_p3 || "In today's life, everyone is going through some problems, anxiety, and tension. We may not be able to solve all of them, but we definitely can give you the strength to face them."}
-              </p>
-            </div>
+      {isSectionEnabled('mission') && (
+        <section className="mission-vision reveal animate-up" style={{ padding: '80px 0', backgroundColor: 'var(--bg-dark)' }}>
+          <div className="container px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Our Mission */}
+              <div className="glass reveal animate-left" style={{ padding: '50px', borderTop: '4px solid var(--primary)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+                <i className="fas fa-bullseye fa-3x" style={{ color: 'var(--primary)', marginBottom: '20px' }}></i>
+                <h2 style={{ fontSize: '2.2rem', marginBottom: '20px' }}>Our Mission</h2>
+                <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '20px' }}>
+                  {cmsData.about_mission_p1 || "We are Team POWER SOUL, your ultimate guide for fitness, nutrition, and the wellness of life."}
+                </p>
+                <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '20px' }}>
+                  {cmsData.about_mission_p2 || "Our mission is to make our clients fit not only physically but mentally as well—that's why we call it a POWER SOUL. We strive to give our youth a new addiction to fitness, steering them away from bad habits."}
+                </p>
+                <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8' }}>
+                  {cmsData.about_mission_p3 || "In today's life, everyone is going through some problems, anxiety, and tension. We may not be able to solve all of them, but we definitely can give you the strength to face them."}
+                </p>
+              </div>
 
-            {/* Our Vision */}
-            <div className="glass reveal animate-right" style={{ padding: '50px', borderTop: '4px solid var(--accent)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
-              <i className="fas fa-eye fa-3x" style={{ color: 'var(--accent)', marginBottom: '20px' }}></i>
-              <h2 style={{ fontSize: '2.2rem', marginBottom: '20px' }}>Our Vision</h2>
-              <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '20px' }}>
-                {cmsData.about_vision_p1 || "To make our clients live a healthy and happy life by providing them the absolute best service."}
-              </p>
-              <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8' }}>
-                {cmsData.about_vision_p2 || "We aim to transform people by cultivating good habits of wellness and fitness. By spreading awareness of a healthy lifestyle, we help our community avoid bad addictions and live their best lives."}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Founder & Team Section */}
-      <section className="team-section reveal animate-up" style={{ padding: '80px 0', backgroundColor: 'var(--bg-dark-alt)' }}>
-        <div className="container px-4">
-          <div className="section-title text-center" style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <h2 className="gradient-text" style={{ fontSize: 'clamp(2rem, 8vw, 3rem)' }}>Power Soul Fitness <span style={{ color: 'var(--text-light)' }}>LONAR</span></h2>
-          </div>
-
-          <div className="flex flex-col lg:flex-row items-center gap-12 justify-center">
-            {/* Image */}
-            <div className="glass reveal animate-left" style={{ padding: '15px', maxWidth: '350px', width: '100%', borderRadius: '12px' }}>
-              <img 
-                src={cmsData.about_founder_image || "https://web.archive.org/web/20230322152101im_/https://powersoulfitness.com/wp-content/uploads/2021/12/shiv-mapari-768x1097.jpeg"}
-                alt="Founder of Power Soul Fitness Lonar - Shiv Mapari" 
-                style={{ width: '100%', borderRadius: '8px', display: 'block' }} 
-              />
-            </div>
-
-            {/* Details */}
-            <div className="reveal animate-right" style={{ maxWidth: '600px', textAlign: 'center' }}>
-              <h3 style={{ fontSize: '2.5rem', marginBottom: '10px', color: 'var(--primary)' }}>A project by</h3>
-              <h2 style={{ fontSize: '3.5rem', textTransform: 'uppercase', marginBottom: '15px', letterSpacing: '2px' }}>
-                {cmsData.about_founder_name || "Mr. Shiv Mapari"}
-              </h2>
-              <p style={{ color: 'var(--accent)', fontSize: '1.3rem', marginBottom: '40px', fontStyle: 'italic' }}>
-                {cmsData.about_founder_role || "(Govt. Certified Nutritionist and Fitness Coach)"}
-              </p>
-
-              <div className="glass" style={{ padding: '40px', backgroundColor: 'rgba(255,255,255,0.02)' }}>
-                <h3 style={{ fontSize: '2rem', marginBottom: '30px' }}>And Team</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '30px', justifyContent: 'center' }}>
-                  <div style={{ borderRight: '1px solid rgba(255,255,255,0.1)', paddingRight: '30px' }}>
-                    <h4 style={{ color: '#ff3b3b', fontSize: '1.5rem', marginBottom: '5px' }}>SAISH HEALTH & FITNESS</h4>
-                    <span style={{ color: 'var(--text-grey)' }}>(Pune)</span>
-                  </div>
-                  <div>
-                    <h4 style={{ color: '#ff3b3b', fontSize: '1.5rem', marginBottom: '5px' }}>RIO Fitness</h4>
-                    <span style={{ color: 'var(--text-grey)' }}>(Bangalore)</span>
-                  </div>
-                </div>
+              {/* Our Vision */}
+              <div className="glass reveal animate-right" style={{ padding: '50px', borderTop: '4px solid var(--accent)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+                <i className="fas fa-eye fa-3x" style={{ color: 'var(--accent)', marginBottom: '20px' }}></i>
+                <h2 style={{ fontSize: '2.2rem', marginBottom: '20px' }}>Our Vision</h2>
+                <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '20px' }}>
+                  {cmsData.about_vision_p1 || "To make our clients live a healthy and happy life by providing them the absolute best service."}
+                </p>
+                <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8' }}>
+                  {cmsData.about_vision_p2 || "We aim to transform people by cultivating good habits of wellness and fitness. By spreading awareness of a healthy lifestyle, we help our community avoid bad addictions and live their best lives."}
+                </p>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {/* Founder & Team Section */}
+      {isSectionEnabled('team') && (
+        <section className="team-section reveal animate-up" style={{ padding: '80px 0', backgroundColor: 'var(--bg-dark-alt)' }}>
+          <div className="container px-4">
+            <div className="section-title text-center" style={{ textAlign: 'center', marginBottom: '60px' }}>
+              <h2 className="gradient-text" style={{ fontSize: 'clamp(2rem, 8vw, 3rem)' }}>Power Soul Fitness <span style={{ color: 'var(--text-light)' }}>LONAR</span></h2>
+            </div>
+
+            <div className="flex flex-col lg:flex-row items-center gap-12 justify-center">
+              {/* Image */}
+              <div className="glass reveal animate-left" style={{ padding: '15px', maxWidth: '350px', width: '100%', borderRadius: '12px' }}>
+                <img 
+                  src={cmsData.about_founder_image || "https://powersoulfitness.com/wp-content/uploads/2021/12/shiv-mapari-768x1097.jpeg"}
+                  alt="Founder of Power Soul Fitness Lonar - Shiv Mapari" 
+                  style={{ width: '100%', borderRadius: '8px', display: 'block' }} 
+                />
+              </div>
+
+              {/* Details */}
+              <div className="reveal animate-right" style={{ maxWidth: '600px', textAlign: 'center' }}>
+                <h3 style={{ fontSize: '2.5rem', marginBottom: '10px', color: 'var(--primary)' }}>A project by</h3>
+                <h2 style={{ fontSize: '3.5rem', textTransform: 'uppercase', marginBottom: '15px', letterSpacing: '2px' }}>
+                  {cmsData.about_founder_name || "Mr. Shiv Mapari"}
+                </h2>
+                <p style={{ color: 'var(--accent)', fontSize: '1.3rem', marginBottom: '40px', fontStyle: 'italic' }}>
+                  {cmsData.about_founder_role || "(Govt. Certified Nutritionist and Fitness Coach)"}
+                </p>
+
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

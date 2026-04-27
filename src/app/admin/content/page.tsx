@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
-import { Save, Plus, Trash2, Search, Filter, X } from 'lucide-react'
+import { Save, Plus, Trash2, Search, Filter, X, Image as ImageIcon } from 'lucide-react'
+import ImagePicker from '@/components/admin/ImagePicker'
 
 type ContentItem = {
   id: string
@@ -23,6 +24,7 @@ export default function ContentPage() {
   const [newKey, setNewKey] = useState('')
   const [newValue, setNewValue] = useState('')
   const [newType, setNewType] = useState<'text' | 'image' | 'html'>('text')
+  const [showPicker, setShowPicker] = useState<{ id: string | 'new', current: string } | null>(null)
 
   const supabase = createClient()
 
@@ -192,15 +194,24 @@ export default function ContentPage() {
                         <img src={item.value || 'https://via.placeholder.com/150'} alt={item.key} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1 space-y-2">
-                        <input 
-                          type="text"
-                          placeholder="Image URL"
-                          className="w-full bg-black/50 border border-glass-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-primary transition-all"
-                          value={item.value}
-                          onChange={(e) => setContent(content.map(c => c.id === item.id ? { ...c, value: e.target.value } : c))}
-                          onBlur={(e) => handleUpdate(item.id, e.target.value)}
-                        />
-                        <p className="text-xs text-text-grey">Or manage images in the Images tab and paste the URL here.</p>
+                        <div className="flex gap-2">
+                          <input 
+                            type="text"
+                            placeholder="Image URL"
+                            className="flex-1 bg-black/50 border border-glass-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-primary transition-all"
+                            value={item.value}
+                            onChange={(e) => setContent(content.map(c => c.id === item.id ? { ...c, value: e.target.value } : c))}
+                            onBlur={(e) => handleUpdate(item.id, e.target.value)}
+                          />
+                          <button 
+                            onClick={() => setShowPicker({ id: item.id, current: item.value })}
+                            className="p-2 bg-primary/10 text-primary border border-primary/20 rounded-xl hover:bg-primary hover:text-white transition-all flex items-center gap-2 px-4"
+                          >
+                            <ImageIcon size={18} />
+                            <span className="text-sm font-medium">Browse</span>
+                          </button>
+                        </div>
+                        <p className="text-xs text-text-grey">Select an image from gallery or paste a URL.</p>
                       </div>
                     </div>
                   ) : null}
@@ -270,14 +281,24 @@ export default function ContentPage() {
                     onChange={(e) => setNewValue(e.target.value)}
                   />
                 ) : (
-                  <input 
-                    type="url" 
-                    required
-                    placeholder="https://..."
-                    className="w-full bg-black/50 border border-glass-border rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-primary transition-all"
-                    value={newValue}
-                    onChange={(e) => setNewValue(e.target.value)}
-                  />
+                  <div className="flex gap-2">
+                    <input 
+                      type="url" 
+                      required
+                      placeholder="https://..."
+                      className="flex-1 bg-black/50 border border-glass-border rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-primary transition-all"
+                      value={newValue}
+                      onChange={(e) => setNewValue(e.target.value)}
+                    />
+                    <button 
+                      type="button"
+                      onClick={() => setShowPicker({ id: 'new', current: newValue })}
+                      className="p-2 bg-primary/10 text-primary border border-primary/20 rounded-xl hover:bg-primary hover:text-white transition-all flex items-center gap-2 px-4"
+                    >
+                      <ImageIcon size={18} />
+                      <span className="text-sm font-medium">Browse</span>
+                    </button>
+                  </div>
                 )}
               </div>
 
@@ -299,6 +320,21 @@ export default function ContentPage() {
             </form>
           </div>
         </div>
+      )}
+      {/* Image Picker Modal */}
+      {showPicker && (
+        <ImagePicker 
+          onSelect={(url) => {
+            if (showPicker.id === 'new') {
+              setNewValue(url)
+            } else {
+              setContent(content.map(c => c.id === showPicker.id ? { ...c, value: url } : c))
+              handleUpdate(showPicker.id, url)
+            }
+            setShowPicker(null)
+          }}
+          onClose={() => setShowPicker(null)}
+        />
       )}
     </div>
   )
