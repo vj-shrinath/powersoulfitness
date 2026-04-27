@@ -172,11 +172,20 @@ export default function Home() {
           <h1 className="text-[4rem] sm:text-[5rem] md:text-[6rem] lg:text-[7rem] mb-6 font-black tracking-tight leading-[1.1]">
             <span className="fire-text">{getContent('hero_title', 'FIT & STRONG')}</span>
           </h1>
-          <p className="mb-16 text-base sm:text-lg md:text-xl text-white/90 leading-relaxed" style={{ width: '100%', maxWidth: '820px', marginLeft: 'auto', marginRight: 'auto', textAlign: 'center' }}>
+          <p 
+            style={{ 
+              maxWidth: '700px', 
+              margin: '0 auto 40px', 
+              fontSize: '1.3rem', 
+              color: 'rgba(255, 255, 255, 0.9)', 
+              lineHeight: '1.6',
+              textAlign: 'center'
+            }}
+          >
             {getContent('hero_description', "Recognize your super powers with us. Build strength like superman and lift weight like thor's hammer. Join the most premium fitness destination in Lonar.")}
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center" style={{ width: '100%' }}>
-            <a href="tel:9527958899" className="btn btn-primary glow-btn w-full sm:w-auto px-8 py-4 text-base md:text-lg font-bold">Start Training Now</a>
+            <a href="tel:9527958899" className="btn btn-primary glow-btn w-full sm:w-auto" style={{ padding: '15px 40px', fontSize: '1.1rem' }}>Start Training Now</a>
             <a href="#about" className="btn btn-outline w-full sm:w-auto px-8 py-4 text-base md:text-lg font-bold border-accent text-accent">Explore Gym</a>
           </div>
         </div>

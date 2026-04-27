@@ -30,7 +30,7 @@ const Header = () => {
             <img 
               src="/images/logo.png" 
               alt="Power Soul Fitness" 
-              style={{ width: 'auto', height: '60px', maxHeight: '60px', objectFit: 'contain' }}
+              style={{ width: 'auto', height: '150px', maxHeight: '150px', objectFit: 'contain' }}
               className="drop-shadow-2xl"
             />
           </Link>

@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const Footer = () => {
   return (
@@ -8,44 +9,44 @@ const Footer = () => {
           <div className="footer-about">
             <h3 style={{ color: 'var(--primary)', marginBottom: '25px', fontSize: '1.5rem' }}>Power Soul <span style={{ color: 'var(--accent)' }}>Fitness</span></h3>
             <p style={{ color: 'var(--text-grey)', lineHeight: '1.8' }}>
-              We are team POWER SOUL, the best guidance for fitness, nutrition, and wellness of life. 
-              Our mission is to make our clients fit not only physically but mentally also.
+              Power Soul Fitness is the <strong>best gym in Lonar, Maharashtra</strong>. We provide expert guidance for fitness, nutrition, and mental wellness. 
+              Our mission is to help the Lonar community find their inner strength and achieve body transformation.
             </p>
             <div className="social-links" style={{ marginTop: '30px', display: 'flex', gap: '15px' }}>
-              <a href="#" style={{ width: '40px', height: '40px', background: 'var(--glass)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'var(--transition)' }} className="social-icon">
+              <a href="https://facebook.com/powersoulfitness" target="_blank" rel="noopener noreferrer" style={{ width: '40px', height: '40px', background: 'var(--glass)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'var(--transition)' }} className="social-icon">
                 <i className="fab fa-facebook-f"></i>
               </a>
-              <a href="#" style={{ width: '40px', height: '40px', background: 'var(--glass)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'var(--transition)' }} className="social-icon">
+              <a href="https://instagram.com/powersoulfitness" target="_blank" rel="noopener noreferrer" style={{ width: '40px', height: '40px', background: 'var(--glass)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'var(--transition)' }} className="social-icon">
                 <i className="fab fa-instagram"></i>
               </a>
-              <a href="#" style={{ width: '40px', height: '40px', background: 'var(--glass)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'var(--transition)' }} className="social-icon">
+              <a href="https://api.whatsapp.com/send?phone=919527958899" target="_blank" rel="noopener noreferrer" style={{ width: '40px', height: '40px', background: 'var(--glass)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'var(--transition)' }} className="social-icon">
                 <i className="fab fa-whatsapp"></i>
               </a>
             </div>
           </div>
           <div className="footer-links">
-            <h3 style={{ marginBottom: '25px', fontSize: '1.3rem' }}>Quick Links</h3>
+            <h3 style={{ marginBottom: '25px', fontSize: '1.3rem' }}>Fitness in Lonar</h3>
             <ul style={{ color: 'var(--text-grey)' }}>
-              <li style={{ marginBottom: '12px' }}><a href="/" style={{ transition: 'var(--transition)' }} className="hover-primary">Home</a></li>
-              <li style={{ marginBottom: '12px' }}><a href="#about" style={{ transition: 'var(--transition)' }} className="hover-primary">About Us</a></li>
-              <li style={{ marginBottom: '12px' }}><a href="#services" style={{ transition: 'var(--transition)' }} className="hover-primary">Services</a></li>
-              <li style={{ marginBottom: '12px' }}><a href="#contact" style={{ transition: 'var(--transition)' }} className="hover-primary">Contact</a></li>
+              <li style={{ marginBottom: '12px' }}><Link href="/" style={{ transition: 'var(--transition)' }} className="hover-primary">Home</Link></li>
+              <li style={{ marginBottom: '12px' }}><Link href="/about-us" style={{ transition: 'var(--transition)' }} className="hover-primary">About Us</Link></li>
+              <li style={{ marginBottom: '12px' }}><Link href="/services" style={{ transition: 'var(--transition)' }} className="hover-primary">Our Services</Link></li>
+              <li style={{ marginBottom: '12px' }}><Link href="/contact" style={{ transition: 'var(--transition)' }} className="hover-primary">Contact Us</Link></li>
             </ul>
           </div>
           <div className="footer-contact">
-            <h3 style={{ marginBottom: '25px', fontSize: '1.3rem' }}>Get In Touch</h3>
+            <h3 style={{ marginBottom: '25px', fontSize: '1.3rem' }}>Contact Info</h3>
             <ul style={{ color: 'var(--text-grey)' }}>
               <li style={{ marginBottom: '15px', display: 'flex', gap: '15px' }}>
                 <i className="fas fa-map-marker-alt" style={{ color: 'var(--accent)', marginTop: '5px' }}></i>
-                <span>Opposite Limbi Lake, Loni Road, Lonar</span>
+                <span>Opposite Limbi Lake, Loni Road, Lonar, Maharashtra 443302</span>
               </li>
               <li style={{ marginBottom: '15px', display: 'flex', gap: '15px' }}>
                 <i className="fas fa-phone" style={{ color: 'var(--primary)', marginTop: '5px' }}></i>
-                <span>+91 9527958899</span>
+                <a href="tel:+919527958899" style={{ color: 'inherit', textDecoration: 'none' }}>+91 9527958899</a>
               </li>
               <li style={{ marginBottom: '15px', display: 'flex', gap: '15px' }}>
                 <i className="fas fa-envelope" style={{ color: 'var(--accent)', marginTop: '5px' }}></i>
-                <span>powersoulfitness@gmail.com</span>
+                <a href="mailto:powersoulfitness@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>powersoulfitness@gmail.com</a>
               </li>
             </ul>
           </div>
