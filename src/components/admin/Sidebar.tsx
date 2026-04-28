@@ -9,7 +9,8 @@ import {
   Megaphone, 
   Layers, 
   Settings,
-  LogOut
+  LogOut,
+  Clock
 } from 'lucide-react'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
@@ -27,6 +28,7 @@ const navItems = [
   { name: 'Sliders', href: '/admin/sliders', icon: Layers },
   { name: 'Banners', href: '/admin/banners', icon: Megaphone },
   { name: 'Sections', href: '/admin/sections', icon: Settings },
+  { name: 'Schedules', href: '/admin/schedules', icon: Clock },
 ]
 
 export default function Sidebar({ onNavClick }: { onNavClick?: () => void }) {

@@ -367,22 +367,20 @@ export default function Home() {
               <div className="schedule-card glass reveal animate-up" style={{ padding: '50px 30px', textAlign: 'center', position: 'relative' }}>
                 <i className="fas fa-dumbbell fa-4x" style={{ color: 'var(--primary)', marginBottom: '25px' }}></i>
                 <h4 style={{ fontSize: '1.8rem', marginBottom: '20px' }}>Gym Hours</h4>
-                <div style={{ background: 'var(--primary)', padding: '15px', borderRadius: '10px', marginTop: '20px', display: 'inline-block' }}>
-                  <span style={{ fontSize: '1.3rem', fontWeight: 'bold', color: 'white' }}>6AM - 9AM | 5PM - 9PM</span>
+                <p style={{ color: 'var(--text-grey)', marginBottom: '15px' }}>Monday - Saturday</p>
+                <div style={{ background: 'var(--primary)', padding: '15px', borderRadius: '10px', marginTop: '10px', display: 'inline-block' }}>
+                  <span style={{ fontSize: '1.3rem', fontWeight: 'bold', color: 'white' }}>
+                    {getContent('schedule_gym_hours', '5AM - 9AM | 5PM - 9PM')}
+                  </span>
                 </div>
               </div>
               <div className="schedule-card glass reveal animate-up" style={{ padding: '50px 30px', textAlign: 'center', position: 'relative', transitionDelay: '0.2s' }}>
-                <i className="fas fa-leaf fa-4x" style={{ color: 'var(--accent)', marginBottom: '25px' }}></i>
-                <h4 style={{ fontSize: '1.8rem', marginBottom: '20px' }}>Yoga Classes</h4>
-                <div style={{ background: 'var(--accent)', padding: '15px', borderRadius: '10px', marginTop: '20px', display: 'inline-block' }}>
-                  <span style={{ fontSize: '1.3rem', fontWeight: 'bold', color: 'white' }}>5AM - 7AM</span>
-                </div>
-              </div>
-              <div className="schedule-card glass reveal animate-up" style={{ padding: '50px 30px', textAlign: 'center', position: 'relative', transitionDelay: '0.4s' }}>
-                <i className="fas fa-calendar-day fa-4x" style={{ color: 'var(--text-grey)', marginBottom: '25px' }}></i>
+                <i className="fas fa-calendar-day fa-4x" style={{ color: 'var(--accent)', marginBottom: '25px' }}></i>
                 <h4 style={{ fontSize: '1.8rem', marginBottom: '20px' }}>Sunday</h4>
                 <div style={{ background: 'rgba(255,255,255,0.1)', padding: '15px', borderRadius: '10px', marginTop: '20px', display: 'inline-block', width: '100%', maxWidth: '200px' }}>
-                  <span style={{ fontSize: '1.3rem', fontWeight: 'bold', color: 'var(--accent)' }}>CLOSED</span>
+                  <span style={{ fontSize: '1.3rem', fontWeight: 'bold', color: 'var(--accent)' }}>
+                    {getContent('schedule_sunday_status', 'CLOSED')}
+                  </span>
                 </div>
               </div>
             </div>
