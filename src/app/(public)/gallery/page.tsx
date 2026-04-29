@@ -65,21 +65,17 @@ export default async function GalleryPage() {
             <p className="text-text-grey">Our team is capturing new moments. Check back soon!</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
             {images.map((img, index) => (
               <div 
                 key={img.name} 
-                className="group relative rounded-[1.5rem] overflow-hidden bg-[#111] border border-white/5 hover:border-primary/30 transition-all duration-700 shadow-2xl"
-                style={{ 
-                  aspectRatio: index % 4 === 0 ? '1/1.2' : '1/1',
-                  gridRow: index % 4 === 0 ? 'span 1' : 'span 1'
-                }}
+                className="break-inside-avoid group relative rounded-[2rem] overflow-hidden bg-[#111] border border-white/10 hover:border-primary/30 transition-all duration-700 shadow-2xl mb-8"
               >
                 {/* Image */}
                 <img
                   src={img.url}
                   alt={`Gym Gallery ${index + 1}`}
-                  className="object-cover w-full h-full transition-all duration-1000 group-hover:scale-110 group-hover:rotate-1 group-hover:brightness-110"
+                  className="w-full h-auto transition-all duration-1000 group-hover:scale-105 group-hover:brightness-110"
                   loading="lazy"
                 />
                 
