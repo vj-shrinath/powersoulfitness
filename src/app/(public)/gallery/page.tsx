@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 export const revalidate = 0;
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 export const metadata = {
   title: 'Gallery | Power Soul Fitness',
