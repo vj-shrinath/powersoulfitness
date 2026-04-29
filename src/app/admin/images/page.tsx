@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Upload, Trash2, Search, Image as ImageIcon, Copy, Check } from 'lucide-react'
+import imageCompression from 'browser-image-compression'
 
 export default function ImagesPage() {
   const [images, setImages] = useState<any[]>([])
@@ -19,13 +20,11 @@ export default function ImagesPage() {
     const { data, error } = await supabase
       .storage
       .from('assets')
-      .list('', {
-        limit: 100,
-        offset: 0,
-        sortBy: { column: 'name', order: 'desc' },
-      })
+      .list('gallery', { limit: 100, sortBy: { column: 'created_at', order: 'desc' } })
     
-    if (data) setImages(data)
+    if (data) {
+      setImages(data.filter(f => f.name !== '.emptyFolderPlaceholder' && !f.name.startsWith('.')))
+    }
     setLoading(false)
   }
 
@@ -36,30 +35,43 @@ export default function ImagesPage() {
     const file = e.target.files[0]
     const fileExt = file.name.split('.').pop()
     const fileName = `${Math.random()}.${fileExt}`
-    const filePath = `${fileName}`
+    const filePath = `gallery/${fileName}`
 
-    const { error: uploadError } = await supabase.storage
-      .from('assets')
-      .upload(filePath, file)
+    try {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      }
+      const compressedFile = await imageCompression(file, options)
 
-    if (uploadError) {
+      const { error: uploadError } = await supabase.storage
+        .from('assets')
+        .upload(filePath, compressedFile)
+
+      if (uploadError) {
+        alert('Error uploading image!')
+      } else {
+        fetchImages()
+      }
+    } catch (error) {
+      console.error('Error compressing or uploading image:', error)
       alert('Error uploading image!')
-    } else {
-      fetchImages()
     }
+
     setUploading(false)
   }
 
   const deleteImage = async (name: string) => {
     if (!confirm('Are you sure?')) return
-    const { error } = await supabase.storage.from('assets').remove([name])
+    const { error } = await supabase.storage.from('assets').remove([`gallery/${name}`])
     if (!error) {
       setImages(images.filter(img => img.name !== name))
     }
   }
 
   const copyUrl = (name: string) => {
-    const url = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/${name}`
+    const url = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/gallery/${name}`
     navigator.clipboard.writeText(url)
     setCopied(name)
     setTimeout(() => setCopied(null), 2000)
@@ -88,10 +100,10 @@ export default function ImagesPage() {
           </div>
         ) : (
           images.map((img) => (
-            <div key={img.name} className="glass group border border-glass-border overflow-hidden">
+            <div key={img.name} className="glass group border border-glass-border overflow-hidden relative">
               <div className="aspect-square relative bg-black/40">
                 <img 
-                  src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/${img.name}`} 
+                  src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/gallery/${img.name}`} 
                   alt={img.name} 
                   className="w-full h-full object-cover"
                 />

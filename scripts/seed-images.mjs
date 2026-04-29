@@ -63,7 +63,7 @@ async function seed() {
 
     const fileBuffer = fs.readFileSync(filePath);
     const sanitizedName = file.replace(/\s+/g, '_').toLowerCase();
-    const fileName = `seeded/${sanitizedName}`;
+    const fileName = `gallery/${sanitizedName}`;
     const mimeType = imageMimeTypes[path.extname(file).toLowerCase()] ?? 'image/jpeg';
 
     const { error } = await supabase.storage

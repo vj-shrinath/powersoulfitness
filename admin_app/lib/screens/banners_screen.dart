@@ -119,7 +119,12 @@ class _BannersScreenState extends State<BannersScreen> {
                 // Image Picker
                 InkWell(
                   onTap: () async {
-                    final img = await _picker.pickImage(source: ImageSource.gallery);
+                    final img = await _picker.pickImage(
+                      source: ImageSource.gallery,
+                      imageQuality: 70,
+                      maxWidth: 1920,
+                      maxHeight: 1920,
+                    );
                     if (img != null) {
                       setSheetState(() => selectedImage = img);
                     }

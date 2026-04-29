@@ -39,13 +39,6 @@
   padding: 20px
 }
 
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
   font-family: var(--font-main);
   background-color: var(--bg-dark);
@@ -61,6 +54,31 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+/* Utility for hiding scrollbar but keeping functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Hide popups and menus when story is active */
+body.story-active .site-logo,
+body.story-active .desktop-nav,
+body.story-active .header-cta,
+body.story-active .hamburger-menu,
+body.story-active .whatsapp-popup,
+body.story-active .whatsapp-button,
+body.story-active .chatbot-popup {
+  display: none !important;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
 }
 
 a {

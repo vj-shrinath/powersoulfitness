@@ -52,20 +52,19 @@ export default function AboutUsClient() {
   return (
     <div className="about-page">
       {/* Page Header */}
-        <section className="page-header relative" style={{ 
-          height: '60vh', 
-          minHeight: '400px',
-          background: `linear-gradient(rgba(0,0,0,0.8), rgba(10,10,10,1)), url("${cmsData.about_hero_bg || '/images/conquer.jpg'}")`,
-          backgroundSize: 'cover',
+      <section className="page-header relative" style={{ 
+        height: '40vh',
+        minHeight: '350px',
+        background: `linear-gradient(rgba(0,0,0,0.8), rgba(10,10,10,1)), url("${cmsData.about_hero_bg || '/images/conquer.jpg'}")`,
+        backgroundSize: 'cover',
         backgroundPosition: 'center',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        paddingTop: '80px',
       }}>
-        <div className="container px-4 reveal animate-up">
-          <h1 className="gradient-text font-black" style={{ fontSize: 'clamp(2.5rem, 10vw, 5rem)', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '2px', lineHeight: '1.1' }}>About Us</h1>
+        <div className="container px-4 reveal animate-up" style={{ marginTop: '100px' }}>
+          <h1 className="gradient-text font-black" style={{ fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '2px', lineHeight: '1.1' }}>About Us</h1>
           <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', color: 'var(--text-grey)', fontSize: '1.1rem' }}>
             <Link href="/" className="hover-primary">Home</Link>
             <span>/</span>
@@ -76,11 +75,11 @@ export default function AboutUsClient() {
 
       {/* Mission & Vision Section */}
       {isSectionEnabled('mission') && (
-        <section className="mission-vision reveal animate-up" style={{ padding: '80px 0', backgroundColor: 'var(--bg-dark)' }}>
+        <section className="mission-vision reveal animate-up py-10 md:py-20" style={{ backgroundColor: 'var(--bg-dark)' }}>
           <div className="container px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Our Mission */}
-              <div className="glass reveal animate-left" style={{ padding: '50px', borderTop: '4px solid var(--primary)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+              <div className="glass reveal animate-left p-6 md:p-12" style={{ borderTop: '4px solid var(--primary)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
                 <i className="fas fa-bullseye fa-3x" style={{ color: 'var(--primary)', marginBottom: '20px' }}></i>
                 <h2 style={{ fontSize: '2.2rem', marginBottom: '20px' }}>Our Mission</h2>
                 <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '20px' }}>
@@ -95,7 +94,7 @@ export default function AboutUsClient() {
               </div>
 
               {/* Our Vision */}
-              <div className="glass reveal animate-right" style={{ padding: '50px', borderTop: '4px solid var(--accent)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+              <div className="glass reveal animate-right p-6 md:p-12" style={{ borderTop: '4px solid var(--accent)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
                 <i className="fas fa-eye fa-3x" style={{ color: 'var(--accent)', marginBottom: '20px' }}></i>
                 <h2 style={{ fontSize: '2.2rem', marginBottom: '20px' }}>Our Vision</h2>
                 <p style={{ color: 'var(--text-grey)', fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '20px' }}>
@@ -112,7 +111,7 @@ export default function AboutUsClient() {
 
       {/* Founder & Team Section */}
       {isSectionEnabled('team') && (
-        <section className="team-section reveal animate-up" style={{ padding: '80px 0', backgroundColor: 'var(--bg-dark-alt)' }}>
+        <section className="team-section reveal animate-up py-10 md:py-20" style={{ backgroundColor: 'var(--bg-dark-alt)' }}>
           <div className="container px-4">
             <div className="section-title text-center" style={{ textAlign: 'center', marginBottom: '60px' }}>
               <h2 className="gradient-text" style={{ fontSize: 'clamp(2rem, 8vw, 3rem)' }}>Power Soul Fitness <span style={{ color: 'var(--text-light)' }}>LONAR</span></h2>

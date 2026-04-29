@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Plus, Trash2, Smartphone, Monitor, Link as LinkIcon, Power, Upload, X } from 'lucide-react'
+import imageCompression from 'browser-image-compression'
 
 type Banner = {
   id: string
@@ -73,12 +74,19 @@ export default function BannersPage() {
     setUploading(true)
     
     try {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      }
+      const compressedFile = await imageCompression(selectedFile, options)
+
       const fileExt = selectedFile.name.split('.').pop()
       const fileName = `banners/${Date.now()}.${fileExt}`
       
       const { error: uploadError } = await supabase.storage
         .from('assets')
-        .upload(fileName, selectedFile)
+        .upload(fileName, compressedFile)
 
       if (uploadError) throw uploadError
 

@@ -47,8 +47,8 @@ export default function ServicesClient() {
       {/* Hero Section */}
       <section
         style={{
-          height: '60vh',
-          minHeight: '400px',
+          height: '40vh',
+          minHeight: '350px',
           backgroundImage: `linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.85)), url("${contentMap.services_hero_bg || '/images/conquer.jpg'}")`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -56,10 +56,9 @@ export default function ServicesClient() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          paddingTop: '120px',
         }}
       >
-        <div className="container" style={{ textAlign: 'center' }}>
+        <div className="container" style={{ textAlign: 'center', marginTop: '100px' }}>
           <h1
             style={{
               fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
@@ -82,7 +81,7 @@ export default function ServicesClient() {
       </section>
 
       {/* Services Grid */}
-      <section style={{ backgroundColor: '#0a0a0a', padding: '80px 0' }}>
+      <section className="py-10 md:py-20" style={{ backgroundColor: '#0a0a0a' }}>
         <div className="container">
           <div className="reveal animate-up" style={{ textAlign: 'center', marginBottom: '60px' }}>
             <p style={{ color: 'var(--primary)', fontWeight: 700, letterSpacing: '3px', fontSize: '0.85rem', marginBottom: '10px', textTransform: 'uppercase' }}>
@@ -163,10 +162,9 @@ export default function ServicesClient() {
       </section>
 
       {/* CTA Section */}
-      <section
+      <section className="py-12 md:py-24"
         style={{
           background: 'linear-gradient(135deg, #0a0a0a 0%, rgba(168,98,237,0.08) 50%, #0a0a0a 100%)',
-          padding: '100px 0',
           textAlign: 'center',
         }}
       >

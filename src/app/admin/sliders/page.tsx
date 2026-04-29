@@ -15,6 +15,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import Image from 'next/image';
+import imageCompression from 'browser-image-compression';
 
 const SLIDER_KEYS = [
   { key: 'home_hero_slider_images', name: 'Home Hero Slider' },
@@ -98,9 +99,16 @@ export default function SlidersPage() {
     const filePath = `sliders/${fileName}`;
 
     try {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
+      const compressedFile = await imageCompression(file, options);
+
       const { data, error } = await supabase.storage
         .from('assets')
-        .upload(filePath, file);
+        .upload(filePath, compressedFile);
 
       if (error) throw error;
 

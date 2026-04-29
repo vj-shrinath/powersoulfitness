@@ -140,6 +140,7 @@ export default function ChatBot() {
       <button
         onClick={() => setOpen(!open)}
         aria-label="Open fitness assistant"
+        className="chatbot-popup"
         style={{
           position: 'fixed',
           bottom: '30px',
@@ -167,6 +168,7 @@ export default function ChatBot() {
       {/* Chat Window */}
       {open && (
         <div
+          className="chatbot-popup"
           style={{
             position: 'fixed',
             bottom: '105px',

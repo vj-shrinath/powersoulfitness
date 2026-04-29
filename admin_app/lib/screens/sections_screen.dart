@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:powersoul_admin/theme.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+
 
 class SectionsScreen extends StatefulWidget {
   const SectionsScreen({super.key});

@@ -112,8 +112,8 @@ export default function ContactClient() {
       {/* Hero */}
       <section
         style={{
-          height: '55vh',
-          minHeight: '380px',
+          height: '40vh',
+          minHeight: '350px',
           backgroundImage: `linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.88)), url("${cmsData.contact_hero_bg || '/images/conquer.jpg'}")`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -121,10 +121,9 @@ export default function ContactClient() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          paddingTop: '120px',
         }}
       >
-        <div className="container" style={{ textAlign: 'center' }}>
+        <div className="container" style={{ textAlign: 'center', marginTop: '100px' }}>
           <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: 900, color: '#fff', textTransform: 'uppercase', letterSpacing: '3px', marginBottom: '1rem' }}>
             Get In{' '}
             <span style={{ color: 'var(--primary)', textShadow: '0 0 30px rgba(168,98,237,0.6)' }}>Touch</span>
@@ -136,7 +135,7 @@ export default function ContactClient() {
       </section>
 
       {/* Contact Info Cards */}
-      <section style={{ backgroundColor: '#0a0a0a', padding: '80px 0 40px' }}>
+      <section className="pt-10 md:pt-20 pb-6 md:pb-10" style={{ backgroundColor: '#0a0a0a' }}>
         <div className="container px-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {contactCards.map((card, i) => (
@@ -189,7 +188,7 @@ export default function ContactClient() {
       </section>
 
       {/* Form + Map */}
-      <section style={{ backgroundColor: '#0a0a0a', padding: '40px 0 100px' }}>
+      <section className="pt-6 md:pt-10 pb-12 md:pb-24" style={{ backgroundColor: '#0a0a0a' }}>
         <div className="container px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
 

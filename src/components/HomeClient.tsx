@@ -171,7 +171,7 @@ export default function Home() {
           <h2 className="text-xl sm:text-2xl md:text-3xl text-accent mb-3 drop-shadow-lg tracking-widest uppercase font-bold">
             {getContent('hero_subtitle', 'Keep Your Body')}
           </h2>
-          <h1 className="text-[4rem] sm:text-[5rem] md:text-[6rem] lg:text-[7rem] mb-6 font-black tracking-tight leading-[1.1]">
+          <h1 className="text-[4rem] sm:text-[5rem] md:text-[6rem] lg:text-[7rem] mb-2 font-black tracking-tight leading-[1.1]">
             <span className="fire-text">{getContent('hero_title', 'FIT & STRONG')}</span>
           </h1>
           <p 
@@ -330,7 +330,7 @@ export default function Home() {
 
       {/* Amenities Section */}
       {isSectionEnabled('amenities') && (
-        <section className="amenities reveal animate-up" style={{ backgroundColor: 'var(--bg-dark)', padding: '100px 0' }}>
+        <section className="amenities reveal animate-up py-12 md:py-24" style={{ backgroundColor: 'var(--bg-dark)' }}>
           <div className="container">
             <div className="section-title"><h2 className="gradient-text" style={{ fontSize: '3.5rem', textTransform: 'lowercase', marginBottom: '60px' }}>amenities</h2></div>
             <div className="glass reveal animate-up" style={{ padding: '60px 20px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--primary)', backgroundColor: 'rgba(255,255,255,0.03)' }}>

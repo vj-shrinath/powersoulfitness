@@ -27,7 +27,7 @@ export default function AnnouncementBanner({ banners }: { banners: Banner[] }) {
   if (!isVisible || !currentBanner) return null
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-500">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/20 backdrop-blur-md animate-in fade-in duration-500">
       <div className="relative max-w-4xl w-full glass border border-glass-border overflow-hidden shadow-2xl shadow-primary/20">
         <button 
           onClick={() => setIsVisible(false)}

@@ -4,7 +4,7 @@ import Script from 'next/script';
 
 const GoogleReviews = () => {
   return (
-    <section id="reviews" className="google-reviews reveal animate-up" style={{ padding: '100px 0', backgroundColor: 'var(--bg-dark-alt)' }}>
+    <section id="reviews" className="google-reviews reveal animate-up py-12 md:py-24" style={{ backgroundColor: 'var(--bg-dark-alt)' }}>
       <div className="container">
         <div className="section-title">
           <h2 className="gradient-text">Member Testimonials</h2>

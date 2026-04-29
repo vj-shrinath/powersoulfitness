@@ -12,6 +12,7 @@ export default function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with Power Soul Fitness on WhatsApp"
+      className="whatsapp-popup"
       style={{
         position: 'fixed',
         bottom: '105px',

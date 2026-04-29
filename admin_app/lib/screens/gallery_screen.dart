@@ -1,4 +1,4 @@
-import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,13 +30,13 @@ class _GalleryScreenState extends State<GalleryScreen> {
     setState(() => _loading = true);
     try {
       final List<FileObject> objects = await _supabase.storage.from('assets').list(
-        path: 'seeded',
+        path: 'gallery',
         searchOptions: const SearchOptions(
           sortBy: SortBy(column: 'created_at', order: 'desc'),
         ),
       );
       if (mounted) {
-        setState(() => _files = objects);
+        setState(() => _files = objects.where((f) => f.name != '.emptyFolderPlaceholder' && !f.name.startsWith('.')).toList());
       }
     } catch (e) {
       debugPrint('Error fetching storage: $e');
@@ -47,31 +47,47 @@ class _GalleryScreenState extends State<GalleryScreen> {
     }
   }
 
-  Future<void> _uploadImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image == null) return;
+  Future<void> _uploadImages() async {
+    final List<XFile> images = await _picker.pickMultiImage(
+      imageQuality: 70,
+      maxWidth: 1920,
+      maxHeight: 1920,
+    );
+    if (images.isEmpty) return;
 
     setState(() => _loading = true);
+    int successCount = 0;
+    
     try {
-      final fileBytes = await image.readAsBytes();
-      final fileName = 'seeded/${DateTime.now().millisecondsSinceEpoch}${p.extension(image.path)}';
-      
-      await _supabase.storage.from('assets').uploadBinary(
-            fileName,
-            fileBytes,
-            fileOptions: const FileOptions(upsert: true),
-          );
-      
+      for (final image in images) {
+        final fileBytes = await image.readAsBytes();
+        final fileName =
+            'gallery/${DateTime.now().millisecondsSinceEpoch}_${successCount}${p.extension(image.path)}';
+
+        await _supabase.storage.from('assets').uploadBinary(
+              fileName,
+              fileBytes,
+              fileOptions: const FileOptions(upsert: true),
+            );
+        successCount++;
+      }
+
       _fetchFiles();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image uploaded successfully!'), backgroundColor: Colors.green),
+          SnackBar(
+            content: Text('$successCount images uploaded successfully!'),
+            backgroundColor: Colors.green,
+          ),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Upload failed: $e'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text('Upload failed at image $successCount: $e'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     } finally {
@@ -81,7 +97,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   Future<void> _deleteImage(String name) async {
     try {
-      await _supabase.storage.from('assets').remove(['seeded/$name']);
+      await _supabase.storage.from('assets').remove(['gallery/$name']);
       _fetchFiles();
     } catch (e) {
       debugPrint('Delete error: $e');
@@ -96,7 +112,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
         actions: [
           IconButton(
             icon: const Icon(LucideIcons.imagePlus, color: AppTheme.primaryColor),
-            onPressed: _uploadImage,
+            onPressed: _uploadImages,
           ),
         ],
       ),
@@ -117,7 +133,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                       itemCount: _files.length,
                       itemBuilder: (context, index) {
                         final file = _files[index];
-                        final publicUrl = _supabase.storage.from('assets').getPublicUrl('seeded/${file.name}');
+                        final publicUrl = _supabase.storage.from('assets').getPublicUrl('gallery/${file.name}');
                         
                         return Container(
                           decoration: BoxDecoration(

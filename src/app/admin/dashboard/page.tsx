@@ -96,8 +96,8 @@ export default function DashboardPage() {
                 <Image className="text-accent group-hover:scale-110 transition-transform" size={24} />
               </div>
               <div>
-                <p className="text-white font-bold text-base">Upload Asset</p>
-                <p className="text-text-grey text-xs mt-0.5">Add images to CDN</p>
+                <p className="text-white font-bold text-base">Gym Gallery</p>
+                <p className="text-text-grey text-xs mt-0.5">Manage public gallery images</p>
               </div>
             </Link>
 

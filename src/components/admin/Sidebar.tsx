@@ -24,7 +24,7 @@ const navItems = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
   { name: 'Content', href: '/admin/content', icon: FileText },
   { name: 'Services', href: '/admin/services', icon: Settings },
-  { name: 'Images', href: '/admin/images', icon: ImageIcon },
+  { name: 'Gallery', href: '/admin/images', icon: ImageIcon },
   { name: 'Sliders', href: '/admin/sliders', icon: Layers },
   { name: 'Banners', href: '/admin/banners', icon: Megaphone },
   { name: 'Sections', href: '/admin/sections', icon: Settings },
