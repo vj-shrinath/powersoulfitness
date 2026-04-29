@@ -160,8 +160,8 @@ export default function Stories() {
               ))}
             </div>
 
-            {/* Header */}
-            <div className="absolute top-8 left-4 right-4 z-20 flex justify-between items-center text-white">
+            {/* Header (Higher z-index to stay above nav areas) */}
+            <div className="absolute top-8 left-4 right-4 z-30 flex justify-between items-center text-white">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full border border-white/20 overflow-hidden bg-black">
                   <img src={stories[0].url} alt="" className="w-full h-full object-cover" />
