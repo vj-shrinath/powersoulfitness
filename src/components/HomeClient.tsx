@@ -168,9 +168,9 @@ export default function Home() {
             textAlign: 'center',
           }}
         >
-          <h2 className="text-xl sm:text-2xl md:text-3xl text-accent mb-3 drop-shadow-lg tracking-widest uppercase font-bold">
+          <p className="text-xl sm:text-2xl md:text-3xl text-accent mb-3 drop-shadow-lg tracking-widest uppercase font-bold">
             {getContent('hero_subtitle', 'Keep Your Body')}
-          </h2>
+          </p>
           <h1 className="text-[4rem] sm:text-[5rem] md:text-[6rem] lg:text-[7rem] mb-2 font-black tracking-tight leading-[1.1]">
             <span className="fire-text">{getContent('hero_title', 'FIT & STRONG')}</span>
           </h1>
@@ -217,7 +217,7 @@ export default function Home() {
           <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '80px', alignItems: 'center' }}>
             <div className="welcome-image">
               <div style={{ position: 'relative' }}>
-                <img src={getContent('home_about_img', '/images/conquer.jpg')} alt="Welcome" style={{ borderRadius: '12px', position: 'relative', zIndex: 2, boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }} />
+                <img src={getContent('home_about_img', '/images/conquer.jpg')} alt="Power Soul Fitness Gym Lonar - Main Training Area" style={{ borderRadius: '12px', position: 'relative', zIndex: 2, boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }} />
                 <div style={{ position: 'absolute', top: '-30px', left: '-30px', width: '100%', height: '100%', border: '4px solid var(--accent)', borderRadius: '12px', zIndex: 1 }}></div>
               </div>
             </div>
@@ -259,7 +259,7 @@ export default function Home() {
                       <div className="power-img-wrapper">
                         <img 
                           src={src} 
-                          alt={`Power ${idx + 1}`} 
+                          alt={`Power Soul Fitness - ${idx === 0 ? 'Superman Strength' : idx === 1 ? "Thor's Hammer" : 'Supergirl Energy'}`} 
                           className="hover-zoom power-img" 
                           onError={(e) => {
                             (e.currentTarget as HTMLImageElement).src = 'https://placehold.co/600x800/1a1a1a/a862ed?text=Power+Image+Missing';

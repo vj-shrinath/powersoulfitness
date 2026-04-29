@@ -1,6 +1,12 @@
 export const runtime = "edge";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  themeColor: '#a862ed',
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: {
@@ -17,13 +23,18 @@ export const metadata: Metadata = {
     address: true,
     telephone: true,
   },
-  metadataBase: new URL('https://powersoulfitness.com'), // Replace with actual domain
+  metadataBase: new URL('https://powersoulfitness.com'),
   alternates: {
     canonical: '/',
   },
   icons: {
     icon: '/images/logo.png',
     apple: '/images/logo.png',
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'PSF Lonar',
   },
   openGraph: {
     title: 'Power Soul Fitness - Best Gym in Lonar',
